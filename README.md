@@ -1,4 +1,4 @@
-# Tic-Tac-Toe with Ai
+# Tic-Tac-Toe with AI
 Project "Tic-Tac-Toe with AI" from Jetbrains Academy. Standard Tic-Tac-Toe game with 3 levels: Easy, Medium and Hard level that is made with minimax algorithm.
 
 First, user inputs command "start" and then separated by space two of commands: user, easy, medium or hard to choose who is playing first and who is playing second. 
