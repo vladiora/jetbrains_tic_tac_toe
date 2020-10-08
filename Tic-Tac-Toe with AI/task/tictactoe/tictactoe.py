@@ -11,6 +11,7 @@ class TicTacToe:
         self.field = [[' '] * 3 for _ in range(3)]
 
     def start(self):
+        ''' Checks parameters in command. If they are good than the game starts. '''
         while True:
             init, *params = input('Input command: ').split()  # read command
             if init == 'exit':  # exit the game if command is 'exit'
@@ -20,7 +21,8 @@ class TicTacToe:
             if check:  # if parameters are good than start the game
                 self.game_handler()
 
-    def game_params_handler(self, pl1=None, pl2=None):  # check if parameters are good
+    def game_params_handler(self, pl1=None, pl2=None):
+        ''' Checks if parameters in command are good. '''
         if pl1 in self.players_lvl and pl2 in self.players_lvl:
             self.players['X'], self.players['O'] = pl1, pl2  # set player1 and player2
             return True
@@ -28,6 +30,7 @@ class TicTacToe:
         return False
 
     def game_handler(self):
+        ''' Game structure. '''
         self.print_field()  # print empty matrix at the beginnig
         while not self.game_over:
             self.moves_handler(self.current_move)  # get coord. for move
@@ -35,17 +38,20 @@ class TicTacToe:
             self.game_status_handler()  # check if game is over, if not change opponent
             self.current_move = 'O' if self.current_move == 'X' else 'X'  # change to 'O' if 'X' played
 
-    def print_field(self):  # print matrix
+    def print_field(self):  
+        ''' Prints matrix. '''
         print('-' * 9)
         for row in self.field:
             print('|', *row, '|')
         print('-' * 9)
 
-    def moves_handler(self, move):  # if user is first take coord., else get comp. coord.
+    def moves_handler(self, move): 
+        ''' If user is first take coord., else get computer coord. '''
         x, y = self.get_user_move() if self.players[move] == 'user' else self.get_ai_move(self.players[move])
         self.field[x][y] = self.current_move
 
-    def check_user_move(self, pos):  # check if coord. are good
+    def check_user_move(self, pos):  
+        ''' Checks if coord. are good. '''
         if not all(spot.isdigit() for spot in pos):
             print('You should enter numbers!')
         elif not (0 < int(pos[0]) < 4) or not (0 < int(pos[1]) < 4):
@@ -55,7 +61,8 @@ class TicTacToe:
         else:
             return True
 
-    def get_user_move(self):  # user input witf coordinates
+    def get_user_move(self):  
+        ''' Get user input with coordinates. '''
         pos = input('Enter the coordinates: ').split()  # take coord.
         checked = self.check_user_move(pos)  # check if coord. are good
         while not checked:  # if coord. are not good ask again
@@ -63,7 +70,8 @@ class TicTacToe:
             checked = self.check_user_move(pos)
         return 3 - int(pos[1]), int(pos[0]) - 1  # return coordinates
 
-    def get_ai_move(self, lvl, x=None, y=None):  # get coord. form computer
+    def get_ai_move(self, lvl, x=None, y=None):  
+        ''' Get coordinates form computer. '''
         print(f'Making move level "{lvl}"')
         if lvl == 'easy':
             free_cells = [(i, j) for i in range(3) for j in range(3) if self.field[i][j] == ' ']
@@ -75,6 +83,9 @@ class TicTacToe:
         return x, y
 
     def minimax(self, move, deep=None, cur_deep=0, x=None, y=None, alpha=-2, beta=2):
+        ''' Minimax algorithm. 
+        Function which will consider all the possible ways the game can go and returns the best value for that move, assuming the opponent also plays optimally. '''
+        
         free_cells = [(x, y) for x in range(3) for y in range(3) if self.field[x][y] == ' ']
         prev_move = 'O' if self.current_move == 'X' else 'X'
         init_res = 2 if prev_move == move else -2
@@ -109,7 +120,8 @@ class TicTacToe:
 
         return init_res, x, y
 
-    def is_winner(self, win_move):  # check if player won
+    def is_winner(self, win_move): 
+        ''' Checks if player won. '''
         if (win_move in self.field or
                 win_move in list(map(list, zip(*self.field))) or
                 win_move == [self.field[i][i] for i in range(3)] or
@@ -118,6 +130,7 @@ class TicTacToe:
         return False
 
     def game_status_handler(self):
+        ''' Prints outcome of the game. '''
         if self.is_winner([self.current_move] * 3):
             self.game_over = True
             print(self.current_move, 'wins')
