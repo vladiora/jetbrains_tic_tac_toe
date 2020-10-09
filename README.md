@@ -19,4 +19,4 @@ Coordinates are:
 
 After game is finished you can start new game agan or exit game with "exit" command.
 
-![](https://im4.ezgif.com/tmp/ezgif-4-2924ddd41d16.gif)
+![](https://github.com/vladiora/jetbrains_tic_tac_toe/blob/master/demonst.gif)
