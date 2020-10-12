@@ -2,11 +2,11 @@ from random import choice
 
 
 class TicTacToe:
+    players_lvl = ['user', 'easy', 'medium', 'hard']  # all commands
+    
     def __init__(self):
         self.game_over = False
         self.players = {'X': '', 'O': ''}
-        self.players_moves = {'user': self.get_user_move, 'comp': self.get_ai_move}
-        self.players_lvl = ['user', 'easy', 'medium', 'hard']  # all commands
         self.current_move = 'X'  # game always starts with X
         self.field = [[' '] * 3 for _ in range(3)]
 
@@ -16,7 +16,7 @@ class TicTacToe:
             init, *params = input('Input command: ').split()  # read command
             if init == 'exit':  # exit the game if command is 'exit'
                 break
-            self.__init__()
+            self.field = [[' '] * 3 for _ in range(3)]
             check = self.game_params_handler(*params)
             if check:  # if parameters are good than start the game
                 self.game_handler()
@@ -60,15 +60,14 @@ class TicTacToe:
             print('This cell is occupied! Choose another one!')
         else:
             return True
-
+        
     def get_user_move(self):  
         ''' Get user input with coordinates. '''
-        pos = input('Enter the coordinates: ').split()  # take coord.
-        checked = self.check_user_move(pos)  # check if coord. are good
-        while not checked:  # if coord. are not good ask again
-            pos = input('Enter the coordinates: ').split()
-            checked = self.check_user_move(pos)
-        return 3 - int(pos[1]), int(pos[0]) - 1  # return coordinates
+        valid_input = False 
+        while not valid_input:  # if coord. are not good ask again
+            coord = input('Enter the coordinates: ').split()
+            valid_input = self.check_user_move(coord) # check if coord. are good
+        return 3 - int(coord[1]), int(coord[0]) - 1  # return coordinates
 
     def get_ai_move(self, lvl, x=None, y=None):  
         ''' Get coordinates form computer. '''
